@@ -2,20 +2,9 @@ import React, { useState } from "react";
 import { Menu, X, Gift, Shirt, Watch, Scissors, ShoppingBag, Phone, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
+import StoreLocationsModal from "./StoreLocationsModal";
 
-interface SubMenuItem {
-  href: string;
-  title: string;
-}
-
-interface MenuItem {
-  title: string;
-  icon: React.ElementType;
-  link: string;
-  subItems?: SubMenuItem[];
-}
-
-const menuItems: MenuItem[] = [
+const menuItems = [
   {
     title: "Le monde Fiori",
     icon: Gift,
@@ -78,6 +67,7 @@ const menuItems: MenuItem[] = [
 const TopNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -105,12 +95,12 @@ const TopNavbar = () => {
               )}
             </button>
 
-            <a
-              href="#"
+            <button
+              onClick={() => setIsStoreModalOpen(true)}
               className="text-sm text-white whitespace-nowrap hover:text-red-500 transition-colors duration-300"
             >
               TROUVER UNE BOUTIQUE
-            </a>
+            </button>
           </div>
           <div className="flex items-center gap-4">
             <a
@@ -129,57 +119,31 @@ const TopNavbar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-500 ease-in-out z-50 w-80 overflow-y-auto`}
       >
-        <div className="flex items-center justify-between p-6 border-b border-red-300/50">
-          <h2 className="text-xl font-semibold text-white">Menu</h2>
-          <button
-            onClick={toggleMenu}
-            aria-label="Close menu"
-            className="text-white hover:text-red-400"
-          >
-            <X size={28} />
-          </button>
-        </div>
-        <ul className="p-6 space-y-4">
+        <div className="flex flex-col p-4">
           {menuItems.map((item) => (
-            <li key={item.title} className="text-white">
-              <div className="flex flex-col">
-                <button
-                  onClick={() => toggleSubmenu(item.title)}
-                  className="flex items-center justify-between w-full py-2 hover:text-red-400 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <item.icon size={28} />
-                    <span className="text-lg">{item.title}</span>
-                  </div>
-                  {item.subItems && (
-                    expandedItem === item.title ? <ChevronUp size={20} /> : <ChevronDown size={20} />
-                  )}
-                </button>
-                {item.subItems && expandedItem === item.title && (
-                  <ul className="ml-12 mt-2 space-y-2 border-l border-red-300/30 pl-4">
-                    {item.subItems.map((subItem) => (
-                      <li key={subItem.href}>
-                        <Link
-                          to={subItem.href}
-                          className="text-sm hover:text-red-400 transition-colors block py-1"
-                          onClick={toggleMenu}
-                        >
-                          {subItem.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+            <div key={item.title} className="relative">
+              <Link to={item.link} className="flex items-center justify-between p-2 text-white hover:bg-red-500 transition-colors">
+                <span>{item.title}</span>
+                {item.subItems && (
+                  <button onClick={() => toggleSubmenu(item.title)} className="text-white">
+                    {expandedItem === item.title ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </button>
                 )}
-              </div>
-            </li>
+              </Link>
+              {item.subItems && expandedItem === item.title && (
+                <ul className="ml-4">
+                  {item.subItems.map((subItem) => (
+                    <li key={subItem.href}>
+                      <Link to={subItem.href} className="block text-white hover:text-red-400 transition-colors">
+                        {subItem.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           ))}
-          <li className="flex items-center gap-4 text-white hover:text-red-400 transition-colors sm:hidden">
-            <Phone size={28} />
-            <a href="#" className="text-lg">
-              Contactez-nous
-            </a>
-          </li>
-        </ul>
+        </div>
       </div>
       {isOpen && (
         <div
@@ -187,6 +151,11 @@ const TopNavbar = () => {
           onClick={toggleMenu}
         ></div>
       )}
+
+      <StoreLocationsModal 
+        isOpen={isStoreModalOpen}
+        onOpenChange={setIsStoreModalOpen}
+      />
     </div>
   );
 };
