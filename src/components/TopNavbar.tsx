@@ -3,6 +3,7 @@ import { Menu, X, Gift, Shirt, Watch, Scissors, ShoppingBag, Phone, ChevronDown,
 import { Link } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import StoreLocationsModal from "./StoreLocationsModal";
+import ContactModal from "./ContactModal";
 
 const menuItems = [
   {
@@ -68,6 +69,7 @@ const TopNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -103,12 +105,12 @@ const TopNavbar = () => {
             </button>
           </div>
           <div className="flex items-center gap-4">
-            <a
-              href="#"
+            <button
+              onClick={() => setIsContactModalOpen(true)}
               className="text-sm text-white whitespace-nowrap hover:text-red-500 transition-colors duration-300 mb-2 sm:mb-0 hidden sm:block"
             >
               CONTACTEZ-NOUS
-            </a>
+            </button>
             <LanguageSwitcher />
           </div>
         </div>
@@ -155,6 +157,11 @@ const TopNavbar = () => {
       <StoreLocationsModal 
         isOpen={isStoreModalOpen}
         onOpenChange={setIsStoreModalOpen}
+      />
+
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onOpenChange={setIsContactModalOpen}
       />
     </div>
   );
