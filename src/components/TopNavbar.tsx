@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X, Gift, Shirt, Watch, Scissors, ShoppingBag, Phone, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface SubMenuItem {
   href: string;
@@ -80,7 +81,7 @@ const TopNavbar = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-    setExpandedItem(null); // Reset expanded item when closing menu
+    setExpandedItem(null);
   };
 
   const toggleSubmenu = (title: string) => {
@@ -111,14 +112,18 @@ const TopNavbar = () => {
               TROUVER UNE BOUTIQUE
             </a>
           </div>
-          <a
-            href="#"
-            className="text-sm text-white whitespace-nowrap hover:text-red-500 transition-colors duration-300 mb-2 sm:mb-0 hidden sm:block"
-          >
-            CONTACTEZ-NOUS
-          </a>
+          <div className="flex items-center gap-4">
+            <a
+              href="#"
+              className="text-sm text-white whitespace-nowrap hover:text-red-500 transition-colors duration-300 mb-2 sm:mb-0 hidden sm:block"
+            >
+              CONTACTEZ-NOUS
+            </a>
+            <LanguageSwitcher />
+          </div>
         </div>
       </nav>
+
       <div
         className={`fixed top-0 left-0 h-full bg-[#700100]/40 backdrop-blur-md shadow-2xl transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"

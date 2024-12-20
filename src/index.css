@@ -114,3 +114,20 @@
 
   
 }
+
+/* Google Translate Styles */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+.goog-te-menu-value {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.skiptranslate {
+  display: none !important;
+}
